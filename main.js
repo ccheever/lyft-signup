@@ -3,8 +3,11 @@ import React from 'react';
 import {
   Dimensions,
   Image,
+  StatusBar,
   StyleSheet,
   Text,
+  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -51,17 +54,18 @@ class LocationPermissionScreen extends React.Component {
 
 class InitialScreen extends React.Component {
   static navigationOptions = {
-    headerMode: 'screen',
     header: {
       visible: false,
-      headerMode: 'screen'
     },
   };
 
   render() {
     let m = 15;
+    const { navigate } = this.props.navigation;
+
     return (
       <View style={styles.container}>
+        <StatusBar hidden={true} animated={true} />
         <Exponent.Components.Video
           source={require('./assets/intro_video.mov')}
           rate={1.0}
@@ -102,8 +106,13 @@ class InitialScreen extends React.Component {
             width,
             backgroundColor: 'transparent',
         }}>
-          <View style={{
-              backgroundColor: PINK,
+          <TouchableOpacity
+            onPress={() => {
+              console.log("Button pressed");
+              navigate('LocationPermissionScreen');
+            }}
+            activeOpacity={0.6}
+            style={{
               marginHorizontal: m,
               marginBottom: m,
               height: 50,
@@ -111,12 +120,13 @@ class InitialScreen extends React.Component {
               flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: PINK,
           }}>
             <Text style={{
                 color: 'white',
                 fontSize: 18,
             }}>Get started</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -131,12 +141,8 @@ const BasicApp = StackNavigator({
   InitialScreen: {screen: InitialScreen},
   LocationPermissionScreen: {screen: LocationPermissionScreen},
 }, {
+  headerMode: 'screen',
   navigationOptions: {
-    headerMode: 'screen',
-    header: {
-      headerMode: 'screen',
-      visible: false,
-    },
   },
 });
 
