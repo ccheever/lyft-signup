@@ -11,6 +11,8 @@ import {
   View,
 } from 'react-native';
 
+import ResponsiveImage from '@exponent/react-native-responsive-image';
+
 var {height, width} = Dimensions.get('window');
 
 const PINK = '#ff00fe';
@@ -39,6 +41,8 @@ class AppContainer extends React.Component {
       Exponent.Asset.fromModule(require('./assets/logo_launchscreen@3x.png')).downloadAsync(),
       Exponent.Asset.fromModule(require('./assets/logo_launchscreen@2x.png')).downloadAsync(),
       Exponent.Asset.fromModule(require('./assets/intro_video.mov')).downloadAsync(),
+      Exponent.Asset.fromModule(require('./assets/Onboarding - Location - Background@2x.png')).downloadAsync(),
+      Exponent.Asset.fromModule(require('./assets/Onboarding - Location - Background@3x.png')).downloadAsync(),
     ]);
 
     this.setState({appIsReady: true});
@@ -47,8 +51,27 @@ class AppContainer extends React.Component {
 
 
 class LocationPermissionScreen extends React.Component {
+
+  static navigationOptions = {
+    header: {
+      visible: false,
+    },
+  };
+
   render() {
-    return (<Text>Can I have location permissions?</Text>);
+    return (
+      <ResponsiveImage
+        sources={{
+          2: require('./assets/Onboarding - Location - Background@2x.png'),
+          3: require('./assets/Onboarding - Location - Background@3x.png'),
+        }}
+        style={{
+          flex: 1,
+          width,
+          height,
+        }}
+      />
+    );
   }
 }
 
@@ -90,12 +113,17 @@ class InitialScreen extends React.Component {
           left: 0,
           width,
         }}>
-          <Image style={{
-              height: 138 / 2.475,
-              width: 198 / 2.475,
-            }}
-            source={require('./assets/logo_launchscreen@3x.png')}
-           />
+        <ResponsiveImage
+          sources={{
+            // The values are anything that Image's source prop accepts
+            2: require('./assets/logo_launchscreen@2x.png'),
+            3: require('./assets/logo_launchscreen@3x.png'),
+          }}
+          style={{
+            height: 138 / 2.475,
+            width: 198 / 2.475,
+          }}
+        />
         </View>
         <View style={{
             position: 'absolute',
