@@ -1658,6 +1658,10 @@ glogg@^1.0.0:
   dependencies:
     sparkles "^1.0.0"
 
+google-libphonenumber@^2.0.11:
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-2.0.11.tgz#52526b919bb8995e14ed9bc6929da9ab9e230b01"
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"

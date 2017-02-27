@@ -13,6 +13,8 @@ import { Ionicons } from '@exponent/vector-icons';
 import Colors from '../constants/Colors';
 import React from 'react';
 
+const AsYouTypeFormatter = require('google-libphonenumber').AsYouTypeFormatter;
+
 class AbsolutePositionAboveKeyboard extends React.Component {
   state = {
     keyboardHeight: 0,
@@ -95,6 +97,10 @@ export default class EnterPhoneNumberScreen extends React.Component {
     title: 'Get started',
   };
 
+  state = {
+    phoneNumber: '',
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -150,14 +156,34 @@ export default class EnterPhoneNumberScreen extends React.Component {
           </View>
           <TextInput
             autoFocus
+            onChangeText={this._handleChangePhoneNumber}
             keyboardType="numeric"
             style={styles.phoneNumberInput}
             placeholder="(204) 234-5678"
+            value={this.state.phoneNumber}
           />
         </View>
       </View>
     );
   };
+
+  _handleChangePhoneNumber = value => {
+    this.setState({ phoneNumber: formatPhoneNumber(value) });
+  };
+}
+
+function formatPhoneNumber(phoneNumber) {
+  if (!phoneNumber) {
+    return '';
+  }
+
+  const formatter = new AsYouTypeFormatter('US');
+  let result;
+  phoneNumber.match(/\d/g).forEach(number => {
+    result = formatter.inputDigit(number);
+  });
+
+  return result;
 }
 
 const styles = StyleSheet.create({
