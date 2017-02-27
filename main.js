@@ -1,4 +1,4 @@
-import Exponent from 'exponent';
+import Exponent, { Font, Asset } from 'exponent';
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
@@ -7,9 +7,10 @@ import EnterPhoneNumberScreen from './screens/EnterPhoneNumberScreen';
 import SplashScreen from './screens/SplashScreen';
 import LocationPermissionScreen from './screens/LocationPermissionScreen';
 import CountryPickerScreen from './screens/CountryPickerScreen';
+import { Ionicons } from '@exponent/vector-icons';
 
 function downloadAssetsAsync(assets) {
-  return assets.map(asset => Exponent.Asset.fromModule(asset).downloadAsync());
+  return assets.map(asset => Asset.fromModule(asset).downloadAsync());
 }
 
 class AppContainer extends React.Component {
@@ -30,8 +31,8 @@ class AppContainer extends React.Component {
   }
 
   async _loadAssetsAsync() {
-    await Promise.all(
-      downloadAssetsAsync([
+    await Promise.all([
+      ...downloadAssetsAsync([
         require('./assets/glow_launchscreen@2x.png'),
         require('./assets/logo_launchscreen@3x.png'),
         require('./assets/logo_launchscreen@2x.png'),
@@ -41,8 +42,9 @@ class AppContainer extends React.Component {
         require('./assets/Onboarding - Location - Background blurred@2x.png'),
         require('./assets/Onboarding - Location - Background blurred@3x.png'),
         require('./assets/Onboarding - Location - Arrow@2x.png'),
-      ])
-    );
+      ]),
+      Font.loadAsync(Ionicons.font),
+    ]);
 
     this.setState({ appIsReady: true });
   }

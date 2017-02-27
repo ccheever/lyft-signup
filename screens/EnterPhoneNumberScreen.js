@@ -26,6 +26,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
 
   state = {
     phoneNumber: '',
+    invalid: false,
   };
 
   render() {
@@ -35,7 +36,14 @@ export default class EnterPhoneNumberScreen extends React.Component {
           <Text style={[styles.normalText, { marginBottom: 12 }]}>
             Get riding within minutes
           </Text>
-          {this._renderPhoneNumberInput()}
+          <Animatable.View
+            ref={view => {
+              this._textInputContainer = view;
+            }}
+            useNativeDriver>
+            {this._renderPhoneNumberInput()}
+          </Animatable.View>
+
           <Text style={[styles.normalText, { marginTop: 12 }]}>
             We'll send you a text to verify your phone
           </Text>
@@ -52,20 +60,26 @@ export default class EnterPhoneNumberScreen extends React.Component {
             </Text>
           </View>
 
-          <NextButton onPress={() => {}} />
+          <NextButton onPress={this._handleSubmit} />
         </AbsolutePositionedAboveKeyboard>
       </View>
     );
   }
 
   _renderPhoneNumberInput = () => {
+    let { invalid } = this.state;
+
     return (
       <View style={styles.phoneNumberContainer}>
         <TouchableWithoutFeedback
           onPress={() => {
             this.props.navigation.navigate('CountryModalStack');
           }}>
-          <View style={styles.countryPickerContainer}>
+          <View
+            style={[
+              styles.countryPickerContainer,
+              invalid && { borderRightColor: Colors.inputError },
+            ]}>
             <Image
               style={{ width: 22, height: 13, resizeMode: 'contain' }}
               source={require('../assets/flags/CA.png')}
@@ -79,13 +93,23 @@ export default class EnterPhoneNumberScreen extends React.Component {
         </TouchableWithoutFeedback>
         <View style={styles.phoneNumberInputContainer}>
           <View style={styles.countryCodeContainer}>
-            <Text style={[styles.normalText, styles.countryCode]}>+1</Text>
+            <Text
+              style={[
+                styles.normalText,
+                styles.countryCode,
+                invalid && styles.invalidInput,
+              ]}>
+              +1
+            </Text>
           </View>
           <TextInput
             autoFocus
+            placeholderTextColor={
+              invalid ? Colors.inputError : Colors.placeholderText
+            }
             onChangeText={this._handleChangePhoneNumber}
             keyboardType="numeric"
-            style={styles.phoneNumberInput}
+            style={[styles.phoneNumberInput, invalid && styles.invalidInput]}
             placeholder="(204) 234-5678"
             value={this.state.phoneNumber}
           />
@@ -94,8 +118,18 @@ export default class EnterPhoneNumberScreen extends React.Component {
     );
   };
 
+  _handleSubmit = () => {
+    let { phoneNumber } = this.state;
+    if (!phoneNumber.match(/^\(\d+\) \d{3}-\d{4}$/)) {
+      requestAnimationFrame(() => this._textInputContainer.shake(500));
+      this.setState({ invalid: true });
+    } else {
+      // TODO: Go to next!
+    }
+  };
+
   _handleChangePhoneNumber = value => {
-    this.setState({ phoneNumber: formatPhoneNumber(value) });
+    this.setState({ phoneNumber: formatPhoneNumber(value), invalid: false });
   };
 }
 
@@ -127,7 +161,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   countryPickerContainer: {
-    borderRightWidth: 1,
+    borderRightWidth: StyleSheet.hairlineWidth,
     borderColor: '#E4E4E4',
     flexDirection: 'row',
     alignItems: 'center',
@@ -164,5 +198,8 @@ const styles = StyleSheet.create({
     borderColor: '#E4E4E4',
     borderRadius: 4,
     marginHorizontal: 15,
+  },
+  invalidInput: {
+    color: Colors.inputError,
   },
 });
