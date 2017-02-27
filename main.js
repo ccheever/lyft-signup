@@ -12,6 +12,7 @@ import LocationPermissionScreen from './screens/LocationPermissionScreen';
 import CountryPickerScreen from './screens/CountryPickerScreen';
 import VerifyPhoneNumberScreen from './screens/VerifyPhoneNumberScreen';
 import InfoOverlayContainer from './components/InfoOverlayContainer';
+import NavigationOptions from './constants/NavigationOptions';
 
 function downloadAssetsAsync(assets) {
   return assets.map(asset => Asset.fromModule(asset).downloadAsync());
@@ -59,31 +60,28 @@ class AppContainer extends React.Component {
   }
 }
 
+const SignupStack = StackNavigator(
+  {
+    EnterPhoneNumberScreen: { screen: EnterPhoneNumberScreen },
+    VerifyPhoneNumberScreen: { screen: VerifyPhoneNumberScreen },
+  },
+  {
+    headerMode: 'float',
+    initialRouteName: 'EnterPhoneNumberScreen',
+    navigationOptions: NavigationOptions.Signup,
+  }
+);
+
 const MainStack = StackNavigator(
   {
     SplashScreen: { screen: SplashScreen },
     LocationPermissionScreen: { screen: LocationPermissionScreen },
     GoToSettingsScreen: { screen: GoToSettingsScreen },
-    EnterPhoneNumberScreen: { screen: EnterPhoneNumberScreen },
-    VerifyPhoneNumberScreen: { screen: VerifyPhoneNumberScreen },
+    SignupStack: { screen: SignupStack },
   },
   {
-    headerMode: 'screen',
+    headerMode: 'none',
     initialRouteName: 'SplashScreen',
-    navigationOptions: {
-      header: {
-        tintColor: Colors.text,
-        titleStyle: {
-          fontSize: 20,
-          color: Colors.text,
-        },
-        style: {
-          backgroundColor: '#fff',
-          borderWidth: 0,
-          height: 70,
-        },
-      },
-    },
   }
 );
 

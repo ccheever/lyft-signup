@@ -20,13 +20,27 @@ import NextButton from '../components/NextButton';
 import AbsolutePositionedAboveKeyboard
   from '../components/AbsolutePositionedAboveKeyboard';
 import InfoOverlayContainer from '../components/InfoOverlayContainer';
+import { CardStack } from 'react-navigation';
+import sendSmsAsync from '../util/sendSmsAsync';
+import NavigationOptions from '../constants/NavigationOptions';
 
 export default class EnterPhoneNumberScreen extends React.Component {
   static navigationOptions = {
     title: 'Get started',
+    ...NavigationOptions.Signup,
+    header: navigation => ({
+      ...NavigationOptions.Signup.header,
+      left: (
+        <CardStack.Header.BackButton
+          tintColor={Colors.text}
+          onPress={() => navigation.goBack(null)}
+        />
+      ),
+    }),
   };
 
   state = {
+    countryCode: '+1',
     phoneNumber: '',
     invalid: false,
   };
@@ -103,7 +117,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
                 styles.countryCode,
                 invalid && styles.invalidInput,
               ]}>
-              +1
+              {this.state.countryCode}
             </Text>
           </View>
           <TextInput
@@ -112,7 +126,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
               invalid ? Colors.inputError : Colors.placeholderText
             }
             onChangeText={this._handleChangePhoneNumber}
-            keyboardType="numeric"
+            keyboardType="number-pad"
             style={[styles.phoneNumberInput, invalid && styles.invalidInput]}
             placeholder="(204) 234-5678"
             value={this.state.phoneNumber}
@@ -122,20 +136,19 @@ export default class EnterPhoneNumberScreen extends React.Component {
     );
   };
 
-  _handleSubmit = () => {
-    let { phoneNumber } = this.state;
+  _handleSubmit = async () => {
+    let { phoneNumber, countryCode } = this.state;
     if (!phoneNumber.match(/^\(\d+\) \d{3}-\d{4}$/)) {
       requestAnimationFrame(() => this._textInputContainer.shake(500));
       this.setState({ invalid: true });
     } else {
       InfoOverlayContainer.updateStatus('verifying');
-      setTimeout(
-        () => {
-          this.props.navigation.navigate('VerifyPhoneNumberScreen');
-          InfoOverlayContainer.updateStatus(null);
-        },
-        500
-      );
+
+      let result = await sendSmsAsync(phoneNumber, countryCode);
+      console.log({ result });
+
+      this.props.navigation.navigate('VerifyPhoneNumberScreen');
+      InfoOverlayContainer.updateStatus(null);
     }
   };
 

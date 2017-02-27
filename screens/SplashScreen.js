@@ -14,7 +14,8 @@ import {
 
 import Colors from '../constants/Colors';
 import delay from 'delay';
-import ResponsiveImage from '@exponent/react-native-responsive-image';
+import TouchableWithoutFeedback
+  from '@exponent/react-native-touchable-native-feedback-safe';
 
 const { height, width } = Dimensions.get('window');
 
@@ -89,11 +90,10 @@ export default class SplashScreen extends React.Component {
           }}>
           <TouchableOpacity
             onPress={() => {
-              console.log('Button pressed');
               navigate(
                 this.state.askLocation
                   ? 'LocationPermissionScreen'
-                  : 'EnterPhoneNumberScreen'
+                  : 'SignupStack'
               );
             }}
             activeOpacity={0.6}
