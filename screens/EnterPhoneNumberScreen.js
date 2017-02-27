@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Image,
   Keyboard,
@@ -10,87 +11,13 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@exponent/vector-icons';
+import { AsYouTypeFormatter } from 'google-libphonenumber';
+import * as Animatable from 'react-native-animatable';
+
 import Colors from '../constants/Colors';
-import React from 'react';
-
-const AsYouTypeFormatter = require('google-libphonenumber').AsYouTypeFormatter;
-
-class AbsolutePositionAboveKeyboard extends React.Component {
-  state = {
-    keyboardHeight: 0,
-  };
-
-  componentWillMount() {
-    this.keyboardWillShowListener = Keyboard.addListener(
-      'keyboardWillShow',
-      this._keyboardWillShow
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardWillHide',
-      this._keyboardWillHide
-    );
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
-  _keyboardWillShow = e => {
-    LayoutAnimation.configureNext({
-      duration: e.duration,
-      update: {
-        duration: e.duration,
-        type: 'keyboard',
-      },
-    });
-    this.setState({ keyboardHeight: e.endCoordinates.height });
-  };
-
-  _keyboardWillHide = () => {
-    LayoutAnimation.configureNext({
-      duration: 70,
-      update: {
-        duration: 70,
-        type: 'keyboard',
-      },
-    });
-    this.setState({ keyboardHeight: 0 });
-  };
-
-  render() {
-    return (
-      <View
-        style={{
-          position: 'absolute',
-          bottom: this.state.keyboardHeight,
-          left: 0,
-          right: 0,
-        }}>
-        {this.props.children}
-      </View>
-    );
-  }
-}
-
-class NextButton extends React.Component {
-  render() {
-    return (
-      <View
-        style={{
-          backgroundColor: '#FE17C5',
-          flex: 1,
-          height: 65,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text style={{ color: '#fff', fontSize: 22 }}>
-          Next
-        </Text>
-      </View>
-    );
-  }
-}
+import NextButton from '../components/NextButton';
+import AbsolutePositionedAboveKeyboard
+  from '../components/AbsolutePositionedAboveKeyboard';
 
 export default class EnterPhoneNumberScreen extends React.Component {
   static navigationOptions = {
@@ -115,7 +42,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
 
         </ScrollView>
 
-        <AbsolutePositionAboveKeyboard>
+        <AbsolutePositionedAboveKeyboard>
           <View style={styles.logInWithFacebookContainer}>
             <Text style={styles.normalText}>
               Or log in with{' '}
@@ -126,7 +53,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
           </View>
 
           <NextButton onPress={() => {}} />
-        </AbsolutePositionAboveKeyboard>
+        </AbsolutePositionedAboveKeyboard>
       </View>
     );
   }
@@ -214,14 +141,14 @@ const styles = StyleSheet.create({
     height: 40,
   },
   countryCode: {
-    fontWeight: '500',
+    fontWeight: '400',
     fontSize: 16,
   },
   phoneNumberInput: {
     width: 200,
     fontSize: 16,
     paddingTop: 2,
-    fontWeight: '500',
+    fontWeight: '400',
   },
   phoneNumberInputContainer: {
     flexDirection: 'row',
