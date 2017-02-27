@@ -8,6 +8,10 @@
   dependencies:
     react-clone-referenced-element "^1.0.1"
 
+"@exponent/react-native-touchable-native-feedback-safe@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@exponent/react-native-touchable-native-feedback-safe/-/react-native-touchable-native-feedback-safe-1.1.1.tgz#410aaa2a2a777a614127772b9ecba69fbe04cabd"
+
 "@exponent/vector-icons@~4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@exponent/vector-icons/-/vector-icons-4.0.0.tgz#772edabd5ad36472d29364729d62b928f4ca2d91"
