@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  StatusBar,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -18,6 +19,7 @@ import Colors from '../constants/Colors';
 import NextButton from '../components/NextButton';
 import AbsolutePositionedAboveKeyboard
   from '../components/AbsolutePositionedAboveKeyboard';
+import InfoOverlayContainer from '../components/InfoOverlayContainer';
 
 export default class EnterPhoneNumberScreen extends React.Component {
   static navigationOptions = {
@@ -33,7 +35,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView keyboardShouldPersistTaps="always" style={{ flex: 1 }}>
-          <Text style={[styles.normalText, { marginBottom: 12 }]}>
+          <Text style={[styles.normalText, { marginBottom: 15 }]}>
             Get riding within minutes
           </Text>
           <Animatable.View
@@ -62,6 +64,8 @@ export default class EnterPhoneNumberScreen extends React.Component {
 
           <NextButton onPress={this._handleSubmit} />
         </AbsolutePositionedAboveKeyboard>
+
+        <StatusBar hidden={false} barStyle="default" />
       </View>
     );
   }
@@ -124,7 +128,14 @@ export default class EnterPhoneNumberScreen extends React.Component {
       requestAnimationFrame(() => this._textInputContainer.shake(500));
       this.setState({ invalid: true });
     } else {
-      // TODO: Go to next!
+      InfoOverlayContainer.updateStatus('verifying');
+      setTimeout(
+        () => {
+          this.props.navigation.navigate('VerifyPhoneNumberScreen');
+          InfoOverlayContainer.updateStatus(null);
+        },
+        500
+      );
     }
   };
 

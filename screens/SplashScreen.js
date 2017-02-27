@@ -25,6 +25,18 @@ export default class SplashScreen extends React.Component {
     },
   };
 
+  state = {
+    askLocation: true,
+  };
+
+  async componentWillMount() {
+    let { status } = await Exponent.Permissions.getAsync(
+      Exponent.Permissions.LOCATION
+    );
+
+    this.setState({ askLocation: false });
+  }
+
   render() {
     let m = 15;
     const { navigate } = this.props.navigation;
@@ -78,7 +90,11 @@ export default class SplashScreen extends React.Component {
           <TouchableOpacity
             onPress={() => {
               console.log('Button pressed');
-              navigate('LocationPermissionScreen');
+              navigate(
+                this.state.askLocation
+                  ? 'LocationPermissionScreen'
+                  : 'EnterPhoneNumberScreen'
+              );
             }}
             activeOpacity={0.6}
             style={{

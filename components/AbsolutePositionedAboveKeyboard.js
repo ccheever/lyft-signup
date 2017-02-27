@@ -47,12 +47,16 @@ export default class AbsolutePositionedAboveKeyboard extends React.Component {
   render() {
     return (
       <View
-        style={{
-          position: 'absolute',
-          bottom: this.state.keyboardHeight,
-          left: 0,
-          right: 0,
-        }}>
+        {...this.props}
+        style={[
+          this.props.style,
+          {
+            position: 'absolute',
+            bottom: this.state.keyboardHeight,
+            left: 0,
+            right: 0,
+          },
+        ]}>
         {this.props.children}
       </View>
     );

@@ -9,7 +9,7 @@ import {
   Text,
   TouchableHighlight,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -21,12 +21,12 @@ const { height, width } = Dimensions.get('window');
 export default class LocationPermissionScreen extends React.Component {
   static navigationOptions = {
     header: {
-      visible: false
-    }
+      visible: false,
+    },
   };
 
   state = {
-    askForLocation: false
+    askForLocation: false,
   };
 
   async componentDidMount() {
@@ -36,7 +36,7 @@ export default class LocationPermissionScreen extends React.Component {
     );
 
     if (status === 'granted') {
-      this.setState({ askForLocation: false });
+      this.props.navigation.navigate('EnterPhoneNumberScreen');
     } else {
       console.log('not granted');
     }
@@ -51,11 +51,11 @@ export default class LocationPermissionScreen extends React.Component {
           style={{
             height,
             width,
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}>
           <View
             style={{
-              flex: 1
+              flex: 1,
             }}>
             <Image
               source={require(
@@ -66,20 +66,20 @@ export default class LocationPermissionScreen extends React.Component {
                 height,
                 width,
                 top: 0,
-                left: 0
+                left: 0,
               }}
             />
             <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
-                flex: 1
+                flex: 1,
               }}>
               <View
                 style={{
                   height: 184, //(256 / 1024 * height), // / 2,
                   width: 272, //(376 / 576) * width, // 378 / 2,
-                  backgroundColor: 'transparent'
+                  backgroundColor: 'transparent',
                 }}>
                 <Image
                   source={require(
@@ -92,7 +92,7 @@ export default class LocationPermissionScreen extends React.Component {
                     top: 184,
                     marginTop: 15 + 30,
                     marginLeft: 272 / 4 - 84 / 2 / 2,
-                    left: 272 / 2
+                    left: 272 / 2,
                   }}
                 />
               </View>
@@ -102,7 +102,7 @@ export default class LocationPermissionScreen extends React.Component {
             style={{
               backgroundColor: 'transparent',
               marginBottom: 40 / 2.5,
-              marginHorizontal: 40 / 2.5
+              marginHorizontal: 40 / 2.5,
             }}>
             <Text
               style={{
@@ -111,7 +111,7 @@ export default class LocationPermissionScreen extends React.Component {
                 textAlign: 'center',
                 fontSize: 21,
                 fontWeight: 'bold',
-                color: 'white'
+                color: 'white',
               }}>Your location is needed to find nearby drivers</Text>
           </View>
         </View>
@@ -123,7 +123,7 @@ export default class LocationPermissionScreen extends React.Component {
           style={{
             flex: 1,
             width,
-            height
+            height,
           }}
         />
       );

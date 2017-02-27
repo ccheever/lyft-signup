@@ -1,13 +1,17 @@
 import Exponent, { Font, Asset } from 'exponent';
 import React from 'react';
+import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { Ionicons } from '@exponent/vector-icons';
 
+import Colors from './constants/Colors';
 import GoToSettingsScreen from './screens/GoToSettingsScreen';
 import EnterPhoneNumberScreen from './screens/EnterPhoneNumberScreen';
 import SplashScreen from './screens/SplashScreen';
 import LocationPermissionScreen from './screens/LocationPermissionScreen';
 import CountryPickerScreen from './screens/CountryPickerScreen';
-import { Ionicons } from '@exponent/vector-icons';
+import VerifyPhoneNumberScreen from './screens/VerifyPhoneNumberScreen';
+import InfoOverlayContainer from './components/InfoOverlayContainer';
 
 function downloadAssetsAsync(assets) {
   return assets.map(asset => Asset.fromModule(asset).downloadAsync());
@@ -27,7 +31,12 @@ class AppContainer extends React.Component {
       return <Exponent.Components.AppLoading />;
     }
 
-    return <RootNavigation />;
+    return (
+      <View style={{ flex: 1 }}>
+        <RootNavigation />
+        <InfoOverlayContainer />
+      </View>
+    );
   }
 
   async _loadAssetsAsync() {
@@ -56,15 +65,17 @@ const MainStack = StackNavigator(
     LocationPermissionScreen: { screen: LocationPermissionScreen },
     GoToSettingsScreen: { screen: GoToSettingsScreen },
     EnterPhoneNumberScreen: { screen: EnterPhoneNumberScreen },
+    VerifyPhoneNumberScreen: { screen: VerifyPhoneNumberScreen },
   },
   {
     headerMode: 'screen',
-    initialRouteName: 'EnterPhoneNumberScreen',
+    initialRouteName: 'SplashScreen',
     navigationOptions: {
       header: {
+        tintColor: Colors.text,
         titleStyle: {
           fontSize: 20,
-          color: '#3B3D51',
+          color: Colors.text,
         },
         style: {
           backgroundColor: '#fff',
