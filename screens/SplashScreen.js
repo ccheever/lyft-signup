@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import delay from 'delay';
 import TouchableWithoutFeedback
   from '@exponent/react-native-touchable-native-feedback-safe';
 

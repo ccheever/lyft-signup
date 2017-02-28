@@ -9,11 +9,10 @@ import {
   Text,
   TouchableHighlight,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import delay from 'delay';
 import ResponsiveImage from '@exponent/react-native-responsive-image';
 
 const { height, width } = Dimensions.get('window');
@@ -21,8 +20,8 @@ const { height, width } = Dimensions.get('window');
 export default class GoToSettingsScreen extends React.Component {
   static navigationOptions = {
     header: {
-      visible: false
-    }
+      visible: false,
+    },
   };
 
   render() {
@@ -34,13 +33,13 @@ export default class GoToSettingsScreen extends React.Component {
           width,
           flex: 1,
           flexDirection: 'column',
-          backgroundColor: 'white'
+          backgroundColor: 'white',
         }}>
         <View
           style={{
             marginTop: 22,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
           <Text
             style={{
@@ -49,13 +48,13 @@ export default class GoToSettingsScreen extends React.Component {
               fontWeight: '600',
               textAlign: 'center',
               marginBottom: 14,
-              marginTop: 14
+              marginTop: 14,
             }}>Turn on Location</Text>
           <Text
             style={{
               color: '#333333',
               fontSize: 13,
-              textAlign: 'center'
+              textAlign: 'center',
             }}>We can't pick you up if we don't know where you are! Go to Settings, select 'Privacy', then 'Location Services'</Text>
         </View>
         <View
@@ -63,7 +62,7 @@ export default class GoToSettingsScreen extends React.Component {
             flex: 1,
             width,
             justifyContent: 'flex-end',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
           <Image
             source={require(
@@ -71,7 +70,7 @@ export default class GoToSettingsScreen extends React.Component {
             )}
             style={{
               width: 523 / 2,
-              height: 854 / 2
+              height: 854 / 2,
             }}
           />
         </View>
@@ -88,12 +87,12 @@ export default class GoToSettingsScreen extends React.Component {
               justifyContent: 'center',
               alignItems: 'center',
               height: 66,
-              width
+              width,
             }}>
             <Text
               style={{
                 color: 'white',
-                fontSize: 24
+                fontSize: 24,
               }}>Go to 'Settings'</Text>
           </View>
         </TouchableOpacity>
