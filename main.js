@@ -9,6 +9,7 @@ import CountryPickerScreen from './screens/CountryPickerScreen';
 import CurrentRouteEmitter from './util/CurrentRouteEmitter';
 import EnterPhoneNumberScreen from './screens/EnterPhoneNumberScreen';
 import GoToSettingsScreen from './screens/GoToSettingsScreen';
+import SignUpInfoScreen from './screens/SignUpInfoScreen';
 import InfoOverlayContainer from './components/InfoOverlayContainer';
 import LocationPermissionScreen from './screens/LocationPermissionScreen';
 import NavigationOptions from './constants/NavigationOptions';
@@ -101,6 +102,7 @@ const SignupStack = StackNavigator(
   {
     EnterPhoneNumberScreen: { screen: EnterPhoneNumberScreen },
     VerifyPhoneNumberScreen: { screen: VerifyPhoneNumberScreen },
+    SignUpInfoScreen: { screen: SignUpInfoScreen },
   },
   {
     headerMode: 'float',

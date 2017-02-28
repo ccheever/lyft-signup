@@ -16,6 +16,7 @@ export default class InfoOverlay extends React.Component {
             { alignItems: 'center', justifyContent: 'center' },
           ]}>
           {this.props.status === 'verifying' && this._renderVerifying()}
+          {this.props.status === 'verified' && this._renderVerified()}
           {this.props.status === 'code-sent' && this._renderCodeSent()}
           {this.props.status === 'saving' && this._renderSaving()}
         </View>
@@ -25,9 +26,9 @@ export default class InfoOverlay extends React.Component {
 
   _renderCodeSent = () => {
     return (
-      <View style={styles.infoContainer}>
+      <View style={styles.infoContainerWide}>
         <Ionicons name="md-checkmark" color="white" size={50} />
-        <Text style={[styles.infoText, { marginTop: 5 }]}>Code sent</Text>
+        <Text style={[styles.infoText, { marginTop: 1 }]}>Code sent</Text>
       </View>
     );
   };
@@ -37,6 +38,15 @@ export default class InfoOverlay extends React.Component {
       <View style={styles.infoContainer}>
         <ActivityIndicator size="large" color="white" />
         <Text style={styles.infoText}>Verifying</Text>
+      </View>
+    );
+  };
+
+  _renderVerified = () => {
+    return (
+      <View style={styles.infoContainerWide}>
+        <Ionicons name="md-checkmark" color="white" size={50} />
+        <Text style={[styles.infoText, { marginTop: 1 }]}>Verified</Text>
       </View>
     );
   };
@@ -56,6 +66,15 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 17,
     paddingHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(99,98,101,0.95)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoContainerWide: {
+    paddingTop: 15,
+    paddingBottom: 13,
+    paddingHorizontal: 25,
     borderRadius: 10,
     backgroundColor: 'rgba(99,98,101,0.95)',
     alignItems: 'center',

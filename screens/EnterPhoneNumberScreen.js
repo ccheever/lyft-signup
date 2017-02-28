@@ -181,7 +181,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
   };
 
   _handleSubmit = async () => {
-    const DEBUG_SKIP = false;
+    const DEBUG_SKIP = true;
 
     let { phoneNumber, countryCode } = this.state;
     if (!DEBUG_SKIP && !phoneNumber.match(/^\(\d+\) \d{3}-\d{4}$/)) {
@@ -191,12 +191,12 @@ export default class EnterPhoneNumberScreen extends React.Component {
       InfoOverlayContainer.updateStatus('verifying');
 
       try {
-        let result = await sendSmsAsync(phoneNumber, countryCode);
-        console.log({ result });
-        // this.props.navigation.navigate('VerifyPhoneNumberScreen', {
-        //   countryCode,
-        //   phoneNumber,
-        // });
+        // let result = await sendSmsAsync(phoneNumber, countryCode);
+        // console.log({ result });
+        this.props.navigation.navigate('VerifyPhoneNumberScreen', {
+          countryCode,
+          phoneNumber,
+        });
       } catch (e) {
         alert('error');
         console.log({ e });

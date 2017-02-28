@@ -14,6 +14,7 @@ import NextButton from '../components/NextButton';
 import AbsolutePositionedAboveKeyboard
   from '../components/AbsolutePositionedAboveKeyboard';
 import Colors from '../constants/Colors';
+import CurrentRouteEmitter from '../util/CurrentRouteEmitter';
 
 export default class VerifyPhoneNumberScreen extends React.Component {
   static navigationOptions = {
@@ -27,6 +28,15 @@ export default class VerifyPhoneNumberScreen extends React.Component {
 
   componentDidMount() {
     this._mounted = true;
+    this._subscription = CurrentRouteEmitter.addListener(
+      'change',
+      routeName => {
+        if (routeName === 'VerifyPhoneNumberScreen') {
+          this._mounted && this._input.focus();
+        }
+      }
+    );
+
     InfoOverlayContainer.updateStatus('code-sent');
 
     setTimeout(
@@ -39,6 +49,7 @@ export default class VerifyPhoneNumberScreen extends React.Component {
 
   componentWillUnmount() {
     this._mounted = false;
+    this._subscription.remove();
     InfoOverlayContainer.updateStatus(null);
   }
 
@@ -135,7 +146,7 @@ export default class VerifyPhoneNumberScreen extends React.Component {
         if (code === '2052') {
           this.setState({ invalid: false, submitting: false });
           requestAnimationFrame(() => {
-            // Go to the next screen
+            this.props.navigation.navigate('SignUpInfoScreen');
           });
         } else {
           this.setState({ invalid: true, submitting: false });
