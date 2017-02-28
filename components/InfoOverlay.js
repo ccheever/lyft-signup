@@ -17,6 +17,7 @@ export default class InfoOverlay extends React.Component {
           ]}>
           {this.props.status === 'verifying' && this._renderVerifying()}
           {this.props.status === 'code-sent' && this._renderCodeSent()}
+          {this.props.status === 'saving' && this._renderSaving()}
         </View>
       </AbsolutePositionedAboveKeyboard>
     );
@@ -36,6 +37,15 @@ export default class InfoOverlay extends React.Component {
       <View style={styles.infoContainer}>
         <ActivityIndicator size="large" color="white" />
         <Text style={styles.infoText}>Verifying</Text>
+      </View>
+    );
+  };
+
+  _renderSaving = () => {
+    return (
+      <View style={styles.infoContainer}>
+        <ActivityIndicator size="large" color="white" />
+        <Text style={styles.infoText}>Saving</Text>
       </View>
     );
   };

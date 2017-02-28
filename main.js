@@ -60,6 +60,9 @@ class AppContainer extends React.Component {
   }
 }
 
+const DEBUG_VERIFY = true;
+const DEBUG_SIGNUP = DEBUG_VERIFY;
+
 const SignupStack = StackNavigator(
   {
     EnterPhoneNumberScreen: { screen: EnterPhoneNumberScreen },
@@ -67,7 +70,15 @@ const SignupStack = StackNavigator(
   },
   {
     headerMode: 'float',
-    initialRouteName: 'EnterPhoneNumberScreen',
+    initialRouteName: DEBUG_VERIFY
+      ? 'VerifyPhoneNumberScreen'
+      : 'EnterPhoneNumberScreen',
+    initialRouteParams: DEBUG_VERIFY
+      ? {
+          countryCode: '+1',
+          phoneNumber: '(778) 899-8725',
+        }
+      : {},
     navigationOptions: NavigationOptions.Signup,
   }
 );
@@ -81,7 +92,7 @@ const MainStack = StackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'SplashScreen',
+    initialRouteName: DEBUG_SIGNUP ? 'SignupStack' : 'SplashScreen',
   }
 );
 
@@ -109,6 +120,7 @@ const RootNavigation = StackNavigator(
   {
     headerMode: 'none',
     mode: 'modal',
+    initialRouteName: 'MainStack',
   }
 );
 
