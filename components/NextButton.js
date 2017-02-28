@@ -6,21 +6,26 @@ import TouchableNativeFeedback
 export default class NextButton extends React.Component {
   render() {
     return (
-      <TouchableNativeFeedback
-        fallback={TouchableHighlight}
-        underlayColor="#BB0E90"
-        onPress={this.props.onPress}
+      <View
         style={{
           backgroundColor: '#FE17C5',
           flex: 1,
-          height: 65,
-          alignItems: 'center',
-          justifyContent: 'center',
         }}>
-        <Text style={{ color: '#fff', fontSize: 22 }}>
-          Next
-        </Text>
-      </TouchableNativeFeedback>
+        <TouchableNativeFeedback
+          fallback={TouchableHighlight}
+          delayPressIn={16}
+          underlayColor="#BB0E90"
+          onPress={this.props.onPress}
+          style={{
+            height: 62,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{ color: '#fff', fontSize: 22 }}>
+            Next
+          </Text>
+        </TouchableNativeFeedback>
+      </View>
     );
   }
 }

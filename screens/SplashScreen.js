@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import TouchableWithoutFeedback
+import TouchableNativeFeedback
   from '@exponent/react-native-touchable-native-feedback-safe';
 
 const { height, width } = Dimensions.get('window');
@@ -80,42 +80,41 @@ export default class SplashScreen extends React.Component {
         <View
           style={{
             position: 'absolute',
-            top: height - 50 - m,
-            left: 0,
-            height: 50 + m,
-            marginBottom: m,
-            width,
+            left: m,
+            right: m,
+            bottom: m,
             backgroundColor: 'transparent',
+            borderRadius: 6,
+            overflow: 'hidden',
+            backgroundColor: Colors.pink,
           }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigate(
-                this.state.askLocation
-                  ? 'LocationPermissionScreen'
-                  : 'SignupStack'
-              );
-            }}
-            activeOpacity={0.6}
+          <TouchableNativeFeedback
+            onPress={this._handlePressGetStarted}
+            delayPressIn={16}
+            fallback={TouchableHighlight}
+            underlayColor="#BF1094"
             style={{
-              marginHorizontal: m,
-              marginBottom: m,
-              height: 50,
-              borderRadius: 6,
               flex: 1,
+              height: 55,
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: Colors.pink,
             }}>
             <Text
               style={{
                 color: 'white',
-                fontSize: 18,
+                fontSize: 20,
               }}>Get started</Text>
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         </View>
       </View>
     );
   }
+
+  _handlePressGetStarted = () => {
+    this.props.navigation.navigate(
+      this.state.askLocation ? 'LocationPermissionScreen' : 'SignupStack'
+    );
+  };
 }
 
 const styles = StyleSheet.create({

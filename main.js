@@ -84,6 +84,8 @@ class AppContainer extends React.Component {
         require('./assets/Onboarding - Location - Background blurred@2x.png'),
         require('./assets/Onboarding - Location - Background blurred@3x.png'),
         require('./assets/Onboarding - Location - Arrow@2x.png'),
+        require('./assets/flags/CA.png'),
+        require('react-navigation/src/views/assets/back-icon.png'),
       ]),
       Font.loadAsync(Ionicons.font),
     ]);

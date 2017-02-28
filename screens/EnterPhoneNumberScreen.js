@@ -1,14 +1,17 @@
+import { WebBrowser } from 'exponent';
 import React from 'react';
 import {
   Image,
   Keyboard,
   LayoutAnimation,
   ScrollView,
+  Linking,
   StyleSheet,
   Text,
   TextInput,
   StatusBar,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { Ionicons } from '@exponent/vector-icons';
@@ -85,14 +88,16 @@ export default class EnterPhoneNumberScreen extends React.Component {
         </View>
 
         <AbsolutePositionedAboveKeyboard>
-          <View style={styles.logInWithFacebookContainer}>
+          <TouchableOpacity
+            style={styles.logInWithFacebookContainer}
+            onPress={this._handlePressFacebook}>
             <Text style={styles.normalText}>
               Or log in with{' '}
               <Text onPress={() => {}} style={styles.facebookLink}>
                 Facebook
               </Text>
             </Text>
-          </View>
+          </TouchableOpacity>
 
           <NextButton onPress={this._handleSubmit} />
         </AbsolutePositionedAboveKeyboard>
@@ -157,8 +162,26 @@ export default class EnterPhoneNumberScreen extends React.Component {
     );
   };
 
+  _handlePressFacebook = async () => {
+    const APP_ID = `1796012677385195`;
+    const REDIRECT_URI = `https://redirect.brentvatne.ca/facebook`;
+    Linking.addEventListener('url', this._handleFacebookRedirect);
+
+    await WebBrowser.openBrowserAsync(
+      `https://www.facebook.com/v2.8/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}`
+    );
+
+    this._input.focus();
+    // Linking.removeEventListener('url', this._handleFacebookRedirect);
+  };
+
+  _handleFacebookRedirect = async event => {
+    WebBrowser.dismissBrowser();
+    console.log({ event });
+  };
+
   _handleSubmit = async () => {
-    const DEBUG_SKIP = true;
+    const DEBUG_SKIP = false;
 
     let { phoneNumber, countryCode } = this.state;
     if (!DEBUG_SKIP && !phoneNumber.match(/^\(\d+\) \d{3}-\d{4}$/)) {
@@ -168,13 +191,15 @@ export default class EnterPhoneNumberScreen extends React.Component {
       InfoOverlayContainer.updateStatus('verifying');
 
       try {
-        // let result = await sendSmsAsync(phoneNumber, countryCode);
-        // console.log({ result });
-        this.props.navigation.navigate('VerifyPhoneNumberScreen', {
-          countryCode,
-          phoneNumber,
-        });
+        let result = await sendSmsAsync(phoneNumber, countryCode);
+        console.log({ result });
+        // this.props.navigation.navigate('VerifyPhoneNumberScreen', {
+        //   countryCode,
+        //   phoneNumber,
+        // });
       } catch (e) {
+        alert('error');
+        console.log({ e });
         InfoOverlayContainer.updateStatus(null);
       }
     }
