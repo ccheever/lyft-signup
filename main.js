@@ -1,21 +1,44 @@
 import Exponent, { Font, Asset } from 'exponent';
 import React from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Ionicons } from '@exponent/vector-icons';
 
 import Colors from './constants/Colors';
-import GoToSettingsScreen from './screens/GoToSettingsScreen';
-import EnterPhoneNumberScreen from './screens/EnterPhoneNumberScreen';
-import SplashScreen from './screens/SplashScreen';
-import LocationPermissionScreen from './screens/LocationPermissionScreen';
 import CountryPickerScreen from './screens/CountryPickerScreen';
-import VerifyPhoneNumberScreen from './screens/VerifyPhoneNumberScreen';
+import CurrentRouteEmitter from './util/CurrentRouteEmitter';
+import EnterPhoneNumberScreen from './screens/EnterPhoneNumberScreen';
+import GoToSettingsScreen from './screens/GoToSettingsScreen';
 import InfoOverlayContainer from './components/InfoOverlayContainer';
+import LocationPermissionScreen from './screens/LocationPermissionScreen';
 import NavigationOptions from './constants/NavigationOptions';
+import SplashScreen from './screens/SplashScreen';
+import VerifyPhoneNumberScreen from './screens/VerifyPhoneNumberScreen';
 
 function downloadAssetsAsync(assets) {
   return assets.map(asset => Asset.fromModule(asset).downloadAsync());
+}
+
+function hasChildNavigator(navigationState) {
+  let child = navigationState.routes[navigationState.index];
+  if (child.routes) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function getCurrentScreen(navigationState) {
+  if (!navigationState) {
+    return null;
+  }
+
+  if (hasChildNavigator(navigationState)) {
+    let child = navigationState.routes[navigationState.index];
+    return getCurrentScreen(child);
+  } else {
+    return navigationState.routes[navigationState.index].routeName;
+  }
 }
 
 class AppContainer extends React.Component {
@@ -34,7 +57,16 @@ class AppContainer extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <RootNavigation />
+        <RootNavigation
+          onNavigationStateChange={(prevState, currentState) => {
+            const currentScreen = getCurrentScreen(currentState);
+            const prevScreen = getCurrentScreen(prevState);
+
+            if (prevScreen !== currentScreen) {
+              CurrentRouteEmitter.emit('change', currentScreen);
+            }
+          }}
+        />
         <InfoOverlayContainer />
       </View>
     );
@@ -60,7 +92,7 @@ class AppContainer extends React.Component {
   }
 }
 
-const DEBUG_VERIFY = true;
+const DEBUG_VERIFY = false;
 const DEBUG_SIGNUP = DEBUG_VERIFY;
 
 const SignupStack = StackNavigator(
@@ -70,16 +102,10 @@ const SignupStack = StackNavigator(
   },
   {
     headerMode: 'float',
-    initialRouteName: DEBUG_VERIFY
-      ? 'VerifyPhoneNumberScreen'
-      : 'EnterPhoneNumberScreen',
-    initialRouteParams: DEBUG_VERIFY
-      ? {
-          countryCode: '+1',
-          phoneNumber: '(778) 899-8725',
-        }
-      : {},
+    initialRouteName: 'EnterPhoneNumberScreen',
     navigationOptions: NavigationOptions.Signup,
+    onTransitionEnd: opts => {},
+    onTransitionStart: opts => {},
   }
 );
 

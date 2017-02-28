@@ -4,6 +4,7 @@ export default {
   Signup: {
     header: {
       tintColor: Colors.text,
+      backTitle: null,
       titleStyle: {
         fontSize: 20,
         color: Colors.text,

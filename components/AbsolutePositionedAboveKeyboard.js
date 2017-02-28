@@ -1,9 +1,10 @@
 import React from 'react';
 import { Keyboard, LayoutAnimation, View } from 'react-native';
+import getCurrentKeyboardHeight from '../util/getCurrentKeyboardHeight';
 
 export default class AbsolutePositionedAboveKeyboard extends React.Component {
   state = {
-    keyboardHeight: 0,
+    keyboardHeight: getCurrentKeyboardHeight(),
   };
 
   componentWillMount() {

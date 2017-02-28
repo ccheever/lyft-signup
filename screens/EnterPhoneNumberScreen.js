@@ -23,6 +23,7 @@ import InfoOverlayContainer from '../components/InfoOverlayContainer';
 import { CardStack } from 'react-navigation';
 import sendSmsAsync from '../util/sendSmsAsync';
 import NavigationOptions from '../constants/NavigationOptions';
+import CurrentRouteEmitter from '../util/CurrentRouteEmitter';
 
 export default class EnterPhoneNumberScreen extends React.Component {
   static navigationOptions = {
@@ -45,10 +46,27 @@ export default class EnterPhoneNumberScreen extends React.Component {
     invalid: false,
   };
 
+  componentDidMount() {
+    this._mounted = true;
+    this._subscription = CurrentRouteEmitter.addListener(
+      'change',
+      routeName => {
+        if (routeName === 'EnterPhoneNumberScreen') {
+          this._mounted && this._input.focus();
+        }
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+    this._subscription.remove();
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView keyboardShouldPersistTaps="always" style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <Text style={[styles.normalText, { marginBottom: 15 }]}>
             Get riding within minutes
           </Text>
@@ -64,7 +82,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
             We'll send you a text to verify your phone
           </Text>
 
-        </ScrollView>
+        </View>
 
         <AbsolutePositionedAboveKeyboard>
           <View style={styles.logInWithFacebookContainer}>
@@ -122,6 +140,9 @@ export default class EnterPhoneNumberScreen extends React.Component {
           </View>
           <TextInput
             autoFocus
+            ref={view => {
+              this._input = view;
+            }}
             placeholderTextColor={
               invalid ? Colors.inputError : Colors.placeholderText
             }
@@ -137,7 +158,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
   };
 
   _handleSubmit = async () => {
-    const DEBUG_SKIP = false;
+    const DEBUG_SKIP = true;
 
     let { phoneNumber, countryCode } = this.state;
     if (!DEBUG_SKIP && !phoneNumber.match(/^\(\d+\) \d{3}-\d{4}$/)) {

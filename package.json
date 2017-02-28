@@ -16,6 +16,6 @@
     "react": "~15.4.0",
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
     "react-native-animatable": "^1.1.0",
-    "react-navigation": "^1.0.0-beta.5"
+    "react-navigation": "brentvatne/react-navigation.git#d566d4a9"
   }
 }
