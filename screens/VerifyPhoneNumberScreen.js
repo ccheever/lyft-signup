@@ -75,9 +75,10 @@ export default class VerifyPhoneNumberScreen extends React.Component {
         </View>
 
         <AbsolutePositionedAboveKeyboard>
-          <NextButton onPress={this._handleSubmit} />
+          <NextButton onPress={() => this._handleSubmit(this.state.code)} />
         </AbsolutePositionedAboveKeyboard>
         <TextInput
+          blurOnSubmit={false}
           autoFocus
           ref={view => {
             this._input = view;
@@ -129,17 +130,20 @@ export default class VerifyPhoneNumberScreen extends React.Component {
       return;
     }
 
-    let nextState = { code, invalid: false };
+    this.setState({ code, invalid: false });
+
     if (code.length === 4) {
-      nextState = { ...nextState, submitting: true };
       this._handleSubmit(code);
     }
-
-    this.setState(nextState);
   };
 
   _handleSubmit = code => {
+    if (this.state.submitting) {
+      return;
+    }
+
     InfoOverlayContainer.updateStatus('verifying');
+    this.setState({ submitting: true });
 
     setTimeout(
       () => {
@@ -147,12 +151,12 @@ export default class VerifyPhoneNumberScreen extends React.Component {
           this.setState({ invalid: false, submitting: false });
           requestAnimationFrame(() => {
             this.props.navigation.navigate('SignUpInfoScreen');
+            InfoOverlayContainer.updateStatus('verified');
           });
         } else {
           this.setState({ invalid: true, submitting: false });
+          InfoOverlayContainer.updateStatus(null);
         }
-
-        InfoOverlayContainer.updateStatus(null);
       },
       1000
     );

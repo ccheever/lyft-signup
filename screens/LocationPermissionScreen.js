@@ -36,9 +36,9 @@ export default class LocationPermissionScreen extends React.Component {
     );
 
     if (status === 'granted') {
-      this.props.navigation.navigate('EnterPhoneNumberScreen');
+      this.props.navigation.navigate('SignUpStack');
     } else {
-      console.log('not granted');
+      this.props.navigation.navigate('GoToSettingsScreen');
     }
   }
 

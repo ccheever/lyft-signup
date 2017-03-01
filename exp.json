@@ -1,8 +1,8 @@
 {
   "name": "lyft-signup",
-  "description": "An empty new project",
+  "description": "Prototype of the Lyft signup flow",
   "slug": "lyft-signup",
-  "privacy": "public",
+  "privacy": "unlisted",
   "sdkVersion": "14.0.0",
   "version": "1.0.0",
   "orientation": "portrait",

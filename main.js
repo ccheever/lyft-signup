@@ -1,6 +1,14 @@
 import Exponent, { Font, Asset } from 'exponent';
 import React from 'react';
-import { Keyboard, View } from 'react-native';
+import {
+  Dimensions,
+  View,
+  Image,
+  Text,
+  Keyboard,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Ionicons } from '@exponent/vector-icons';
 
@@ -76,15 +84,14 @@ class AppContainer extends React.Component {
   async _loadAssetsAsync() {
     await Promise.all([
       ...downloadAssetsAsync([
-        require('./assets/glow_launchscreen@2x.png'),
-        require('./assets/logo_launchscreen@3x.png'),
-        require('./assets/logo_launchscreen@2x.png'),
+        require('./assets/glow_launchscreen.png'),
+        require('./assets/Onboarding - Location - Settings.png'),
         require('./assets/intro_video.mov'),
-        require('./assets/Onboarding - Location - Background@2x.png'),
-        require('./assets/Onboarding - Location - Background@3x.png'),
-        require('./assets/Onboarding - Location - Background blurred@2x.png'),
-        require('./assets/Onboarding - Location - Background blurred@3x.png'),
-        require('./assets/Onboarding - Location - Arrow@2x.png'),
+        require('./assets/Onboarding - Location - Background.png'),
+        require('./assets/Onboarding - Location - Background blurred.png'),
+        require('./assets/Onboarding - Location - Arrow.png'),
+        require('./assets/Onboarding - Icon - Email.png'),
+        require('./assets/Onboarding - Icon - Profile.png'),
         require('./assets/flags/CA.png'),
         require('react-navigation/src/views/assets/back-icon.png'),
       ]),
@@ -96,7 +103,8 @@ class AppContainer extends React.Component {
 }
 
 const DEBUG_VERIFY = false;
-const DEBUG_SIGNUP = DEBUG_VERIFY;
+const DEBUG_SIGNUP_INFO = false;
+const DEBUG_SIGNUP = DEBUG_VERIFY || DEBUG_SIGNUP_INFO;
 
 const SignupStack = StackNavigator(
   {
@@ -106,12 +114,52 @@ const SignupStack = StackNavigator(
   },
   {
     headerMode: 'float',
-    initialRouteName: 'EnterPhoneNumberScreen',
+    initialRouteName: DEBUG_SIGNUP_INFO
+      ? 'SignUpInfoScreen'
+      : 'EnterPhoneNumberScreen',
     navigationOptions: NavigationOptions.Signup,
     onTransitionEnd: opts => {},
     onTransitionStart: opts => {},
   }
 );
+
+class DoneScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <Image
+          source={require('./assets/Onboarding - Location - Background.png')}
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              resizeMode: 'cover',
+            },
+          ]}
+        />
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: 'rgba(0,0,0,0.7)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 30,
+            },
+          ]}>
+          <Text
+            onPress={() => Exponent.Util.reload()}
+            style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>
+            Thanks for trying this Lyft sign up flow prototype on Exponent!
+            Feel free to tap here to try it again.
+          </Text>
+        </View>
+        <StatusBar hidden />
+      </View>
+    );
+  }
+}
 
 const MainStack = StackNavigator(
   {
@@ -123,6 +171,9 @@ const MainStack = StackNavigator(
   {
     headerMode: 'none',
     initialRouteName: DEBUG_SIGNUP ? 'SignupStack' : 'SplashScreen',
+    cardStack: {
+      gesturesEnabled: false,
+    },
   }
 );
 
@@ -146,6 +197,7 @@ const RootNavigation = StackNavigator(
       name: 'LocationModals',
       screen: CountryModalStack,
     },
+    DoneScreen: { screen: DoneScreen },
   },
   {
     headerMode: 'none',

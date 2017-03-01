@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   Linking,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -26,15 +27,28 @@ export default class SplashScreen extends React.Component {
   };
 
   state = {
-    askLocation: true,
+    askLocation: Platform.OS === 'ios',
+    locationDenied: false,
   };
 
   async componentWillMount() {
-    let { status } = await Exponent.Permissions.getAsync(
-      Exponent.Permissions.LOCATION
-    );
+    if (Platform.OS === 'android') {
+      let { status } = await Exponent.Permissions.askAsync(
+        Exponent.Permissions.LOCATION
+      );
+    } else {
+      let { status } = await Exponent.Permissions.getAsync(
+        Exponent.Permissions.LOCATION
+      );
 
-    this.setState({ askLocation: false });
+      if (status === 'granted') {
+        this.setState({ askLocation: false });
+      } else if (status === 'denied') {
+        this.setState({ locationDenied: true, askLocation: false });
+      } else {
+        this.setState({ askLocation: true });
+      }
+    }
   }
 
   render() {
@@ -111,9 +125,13 @@ export default class SplashScreen extends React.Component {
   }
 
   _handlePressGetStarted = () => {
-    this.props.navigation.navigate(
-      this.state.askLocation ? 'LocationPermissionScreen' : 'SignupStack'
-    );
+    if (this.state.locationDenied) {
+      this.props.navigation.navigate('GoToSettingsScreen');
+    } else {
+      this.props.navigation.navigate(
+        this.state.askLocation ? 'LocationPermissionScreen' : 'SignupStack'
+      );
+    }
   };
 }
 

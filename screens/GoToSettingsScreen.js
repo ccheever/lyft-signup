@@ -1,6 +1,7 @@
 import Exponent from 'exponent';
 import React from 'react';
 import {
+  AppState,
   Dimensions,
   Image,
   Linking,
@@ -13,7 +14,7 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import ResponsiveImage from '@exponent/react-native-responsive-image';
+import { NavigationActions } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
 
@@ -23,6 +24,33 @@ export default class GoToSettingsScreen extends React.Component {
       visible: false,
     },
   };
+
+  componentWillMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = async currentState => {
+    if (currentState === 'active') {
+      let { status } = await Exponent.Permissions.getAsync(
+        Exponent.Permissions.LOCATION
+      );
+
+      if (status === 'granted') {
+        const resetAction = NavigationActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'SplashScreen' }),
+            NavigationActions.navigate({ routeName: 'SignupStack' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
+    }
+  };
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -96,6 +124,7 @@ export default class GoToSettingsScreen extends React.Component {
               }}>Go to 'Settings'</Text>
           </View>
         </TouchableOpacity>
+        <StatusBar barStyle="default" hidden={false} />
       </View>
     );
   }
