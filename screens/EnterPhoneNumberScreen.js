@@ -124,7 +124,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
             ]}>
             <Image
               style={{ width: 22, height: 13, resizeMode: 'contain' }}
-              source={require('../assets/flags/CA.png')}
+              source={require('../assets/flags/Country - Flag - us@3x.png')}
             />
             <Ionicons
               size={13}

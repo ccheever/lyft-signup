@@ -203,6 +203,7 @@ const RootNavigation = StackNavigator(
     headerMode: 'none',
     mode: 'modal',
     initialRouteName: 'MainStack',
+    // initialRouteName: 'CountryModalStack',
   }
 );
 

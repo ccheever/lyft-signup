@@ -15,6 +15,7 @@
     "google-libphonenumber": "^2.0.11",
     "react": "~15.4.0",
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
+    "react-native-alphabetlistview": "^0.2.0",
     "react-native-animatable": "^1.1.0",
     "react-navigation": "brentvatne/react-navigation.git#fe18464eb2"
   }
