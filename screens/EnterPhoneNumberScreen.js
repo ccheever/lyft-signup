@@ -214,7 +214,7 @@ export default class EnterPhoneNumberScreen extends React.Component {
       InfoOverlayContainer.updateStatus('verifying');
 
       try {
-        let result = await sendSmsAsync(phoneNumber, countryCode);
+        /* let result = await sendSmsAsync(phoneNumber, countryCode); */
         this.props.navigation.navigate('VerifyPhoneNumberScreen', {
           countryCode,
           phoneNumber,

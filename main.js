@@ -24,6 +24,8 @@ import NavigationOptions from './constants/NavigationOptions';
 import SplashScreen from './screens/SplashScreen';
 import VerifyPhoneNumberScreen from './screens/VerifyPhoneNumberScreen';
 
+console.disableYellowBox = true;
+
 function downloadAssetsAsync(assets) {
   return assets.map(asset => Asset.fromModule(asset).downloadAsync());
 }
@@ -92,7 +94,7 @@ class AppContainer extends React.Component {
         require('./assets/Onboarding - Location - Arrow.png'),
         require('./assets/Onboarding - Icon - Email.png'),
         require('./assets/Onboarding - Icon - Profile.png'),
-        require('./assets/flags/CA.png'),
+        require('./assets/flags/Country - Flag - us.png'),
         require('react-navigation/src/views/assets/back-icon.png'),
       ]),
       Font.loadAsync(Ionicons.font),
@@ -184,6 +186,9 @@ const CountryModalStack = StackNavigator(
   {
     mode: 'modal',
     initialRouteName: 'CountryPicker',
+    cardStack: {
+      gesturesEnabled: false,
+    },
   }
 );
 
@@ -203,7 +208,9 @@ const RootNavigation = StackNavigator(
     headerMode: 'none',
     mode: 'modal',
     initialRouteName: 'MainStack',
-    // initialRouteName: 'CountryModalStack',
+    cardStack: {
+      gesturesEnabled: false,
+    },
   }
 );
 

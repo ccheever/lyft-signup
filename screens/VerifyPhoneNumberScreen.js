@@ -150,15 +150,15 @@ export default class VerifyPhoneNumberScreen extends React.Component {
         if (code === '2052') {
           this.setState({ invalid: false, submitting: false });
           requestAnimationFrame(() => {
-            this.props.navigation.navigate('SignUpInfoScreen');
             InfoOverlayContainer.updateStatus('verified');
+            this.props.navigation.navigate('SignUpInfoScreen');
           });
         } else {
           this.setState({ invalid: true, submitting: false });
           InfoOverlayContainer.updateStatus(null);
         }
       },
-      1000
+      500
     );
   };
 
